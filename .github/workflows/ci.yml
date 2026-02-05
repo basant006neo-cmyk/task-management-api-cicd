@@ -11,10 +11,15 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - name: Print Start Message
-              run: echo "CI Started"
-              
-            - name: Print System Info
+            - name: Checkout Repository
+              uses: actions/checkout@v4
+
+            - name: Setup Nodejs
+              uses: actions/setup-node@v4
+              with:
+                node-version: 18
+            
+            - name: Verify Node
               run: |
-                node -v || echo "Node not installed yet"
-                npm -v || echo "NPM not installed yet"
+                node -v
+                npm -v
