@@ -96,3 +96,46 @@ jobs:
 
       - name: Run dependency audit
         run: npm audit --audit-level=high
+
+  deploy-staging:
+    name: Deploy to Staging
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+
+    steps:
+        - name: Deply via ssh
+          uses: appleboy/ssh-action@v1
+          with:
+            host: ${{ secrets.STAGE_HOST }}
+            username: ec2-user
+            key: ${{ secrets.STAGE_KEY }}
+            script: |
+                cd /var/www/task-api
+                git pull origin develop
+                npm ci
+                pm2 restart task-api-stage
+                echo "✅ Staging deployment complete"
+
+  deploy-production:
+    name: Deploy to Production
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: production
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.STAGE_HOST }}
+          username: ec2-user
+          key: ${{ secrets.STAGE_KEY }}
+          script: |
+            cd /var/www/task-api
+            git pull origin main
+            npm ci
+            pm2 restart task-api-prod
+            echo "🚀 Production deployment complete"
+
