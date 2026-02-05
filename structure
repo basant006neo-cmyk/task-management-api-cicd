@@ -1,0 +1,28 @@
+task-manager-api/
+│
+├── src/
+│   ├── config/
+│   │   ├── index.js
+│   │   ├── database.js
+│   │   └── env.js
+│   ├── controllers/
+│   ├── routes/
+│   ├── services/
+│   ├── middlewares/
+│   ├── utils/
+│   ├── app.js
+│   └── server.js
+│
+├── tests/
+│   └── health.test.js
+│
+├── .github/
+│   └── workflows/
+│       ├── dev.yml
+│       ├── stage.yml
+│       └── prod.yml
+│
+├── .env.example
+├── .gitignore
+├── package.json
+└── README.md
