@@ -68,6 +68,13 @@ jobs:
 
       - name: Run tests
         run: npm run test
+    
+      - name: Upload test artifacts
+        uses: actions/upload-artifact@v4
+        with:
+            name: test-results
+            path: .
+
   security:
     needs: install
     runs-on: ubuntu-latest
@@ -86,6 +93,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-        
+
       - name: Run dependency audit
         run: npm audit --audit-level=high
