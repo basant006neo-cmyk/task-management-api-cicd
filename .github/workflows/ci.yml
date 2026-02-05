@@ -37,15 +37,15 @@ jobs:
       - name: Cache npm
         uses: actions/cache@v4
         with:
-            path: ~/.npm
-            key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
 
       - name: Install dependencies
         run: npm ci
 
       - name: Print install Logs
         run: echo "Dependency installed"
-  
+
   test:
     needs: install
     runs-on: ubuntu-latest
@@ -60,11 +60,32 @@ jobs:
       - name: Cache npm
         uses: actions/cache@v4
         with:
-            path: ~/.npm
-            key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
 
       - name: Install dependencies
         run: npm ci
-    
+
       - name: Run tests
-        run: npm run test  
+        run: npm run test
+  security:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Cache npm
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Run dependency audit
+        run: npm audit --audit-level=high
