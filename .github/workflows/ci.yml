@@ -1,0 +1,20 @@
+name : CI Pipeline
+
+on: 
+    push:
+        branches: [develop, main]
+    pull_request:
+        branches: [develop, main]
+
+jobs:
+    logs:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Print Start Message
+              run: echo "CI Started"
+              
+            - name: Print System Info
+              run: |
+                node -v || echo "Node not installed yet"
+                npm -v || echo "NPM not installed yet"
